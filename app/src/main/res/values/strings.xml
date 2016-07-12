@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">WiFiDirectTest</string>
+    <string name="text.log">Log</string>
+    <string name="text.commands">Commands</string>
+    <string name="text.up">Up</string>
+    <string name="text.down">Down</string>
+    <string name="text.left">Left</string>
+    <string name="text.right">Right</string>
+</resources>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="br.com.renatorfr.test.wifidirect.wifidirecttest.MainActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:text="@string/text.commands"
+            android:id="@+id/txtCommands"
+            android:scrollbars = "vertical"
+            android:layout_gravity="top"
+            android:layout_weight="0.5" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text.up"
+                android:id="@+id/btnUp"
+                android:layout_weight="0.25" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text.down"
+                android:id="@+id/btnDown"
+                android:layout_weight="0.25" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text.left"
+                android:id="@+id/btnLeft"
+                android:layout_weight="0.25" />
+
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/text.right"
+                android:id="@+id/btnRight"
+                android:layout_weight="0.25" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:text="@string/text.log"
+            android:id="@+id/txtLog"
+            android:layout_gravity="bottom"
+            android:layout_weight="0.5" />
+    </LinearLayout>
+</RelativeLayout>
