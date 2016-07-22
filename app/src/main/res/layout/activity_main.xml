@@ -67,5 +67,18 @@
             android:id="@+id/txtLog"
             android:layout_gravity="bottom"
             android:layout_weight="0.5" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/text.refresh"
+                android:id="@+id/btnRefresh"
+                android:layout_weight="0.25" />
+
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
