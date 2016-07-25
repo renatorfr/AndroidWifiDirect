@@ -76,7 +76,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/text.refresh"
-                android:id="@+id/btnRefresh"
+                android:id="@+id/btnConnect"
                 android:layout_weight="0.25" />
 
         </LinearLayout>
