@@ -1,13 +1,10 @@
 package br.com.renatorfr.test.wifidirect.wifidirecttest;
 
-import android.content.ContentResolver;
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -36,19 +33,9 @@ public class SocketClient {
             socket.bind(null);
             socket.connect((new InetSocketAddress(host, port)), 500);
 
-            /**
-             * Create a byte stream from a JPEG file and pipe it to the output stream
-             * of the socket. This data will be retrieved by the server device.
-             */
             OutputStream outputStream = socket.getOutputStream();
-            ContentResolver cr = context.getContentResolver();
-            InputStream inputStream = null;
-            inputStream = cr.openInputStream(Uri.parse("path/to/picture.jpg"));
-            while ((len = inputStream.read(buf)) != -1) {
-                outputStream.write(buf, 0, len);
-            }
+            outputStream.write(command.getCode());
             outputStream.close();
-            inputStream.close();
         } catch (FileNotFoundException e) {
             Log.e(CommandHandler.TAG, e.getMessage());
         } catch (IOException e) {

@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Pe
     private WifiP2pManager.Channel channel;
     private BroadcastReceiver receiver;
     private IntentFilter intentFilter;
+    private WifiP2pDevice device;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +134,10 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Pe
         this.txtCommands.setText(message);
     }
 
+    private void startSocketServer() {
+//        new SocketServerAsyncTask(getApplicationContext(), this).execute();
+    }
+
     public void writeLog(LogCommands logCommand) {
         this.writeLog(logCommand, null);
     }
@@ -151,14 +156,17 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Pe
     public void onPeersAvailable(WifiP2pDeviceList peers) {
         writeLog(LogCommands.PEERS_FOUND);
 
-        WifiP2pDevice device = null;
         for (WifiP2pDevice peer : peers.getDeviceList()) {
             writeLog(LogCommands.PEER, peer.toString());
 
-            device = peer;
+            if (peer.deviceName.startsWith("Android")) {
+                device = peer;
+            }
         }
 
-        connectTo(device);
+        if (device != null) {
+            connectTo(device);
+        }
     }
 
     private void connectTo(WifiP2pDevice device) {
@@ -168,8 +176,7 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Pe
             @Override
             public void onSuccess() {
                 writeLog(LogCommands.PEER_CONNECTED);
-
-
+                startSocketServer();
             }
 
             @Override
