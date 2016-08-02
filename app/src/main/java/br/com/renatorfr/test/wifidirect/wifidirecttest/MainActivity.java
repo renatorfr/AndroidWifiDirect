@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
+import android.net.wifi.p2p.WifiP2pGroup;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -50,6 +51,32 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Pe
         wifiP2pManager = (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         channel = wifiP2pManager.initialize(this, getMainLooper(), null);
         receiver = new WifiDirectBroadcastReceiver(wifiP2pManager, channel, this, this);
+        wifiP2pManager.createGroup(channel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                writeLog(LogCommands.GROUP_CREATED);
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                String message;
+                switch (reason) {
+                    case WifiP2pManager.P2P_UNSUPPORTED:
+                        message = "P2P Unsupported";
+                        break;
+                    case WifiP2pManager.BUSY:
+                        message = "P2P Busy";
+                        break;
+                    case WifiP2pManager.ERROR:
+                        message = "P2P Error";
+                        break;
+                    default:
+                        message = String.valueOf(reason);
+                }
+
+                writeLog(LogCommands.GROUP_NOT_CREATED, message);
+            }
+        });
 
         intentFilter = new IntentFilter();
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
@@ -57,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Pe
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
 
-        discoverPeers();
+//        discoverPeers();
     }
 
     @Override
@@ -110,7 +137,17 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Pe
     }
 
     private void connect() {
-        discoverPeers();
+//        discoverPeers();
+        initializeGroup();
+    }
+
+    private void initializeGroup() {
+        wifiP2pManager.requestGroupInfo(channel, new WifiP2pManager.GroupInfoListener() {
+            @Override
+            public void onGroupInfoAvailable(WifiP2pGroup group) {
+                writeLog(LogCommands.GROUP_FOUND, group.toString());
+            }
+        });
     }
 
     private void discoverPeers() {
@@ -230,7 +267,8 @@ enum LogCommands {
     WIFIP2P_ENABLED("Wifi P2P enabled \\o/"), WIFIP2P_DISABLED("Wifi P2P disabled :("),
     DISCOVER_PEERS_SUCCESS("Peers discover success"), DISCOVER_PEERS_FAILURE("Peers discover failure"),
     PEERS_FOUND("Peers found \\o/"), PEER("\tPeer: "), PEER_CONNECTED("Peer connected \\o/"),
-    PEER_NOT_CONNECTED("Peer not connected :(");
+    PEER_NOT_CONNECTED("Peer not connected :("), GROUP_FOUND("Group found"), GROUP_CREATED("Group created"),
+    GROUP_NOT_CREATED("Group not created ");
 
     private String logCommand;
 
