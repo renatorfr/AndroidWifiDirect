@@ -1,5 +1,6 @@
 package br.com.renatorfr.test.wifidirect.wifidirecttest;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,12 +10,12 @@ public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
 
     private WifiP2pManager wifiP2pManager;
     private WifiP2pManager.Channel channel;
-    private MainActivity activity;
+    private ConnectedActivity activity;
     private WifiP2pManager.PeerListListener peerListListener;
 
     public WifiDirectBroadcastReceiver(WifiP2pManager wifiP2pManager,
                                        WifiP2pManager.Channel channel,
-                                       MainActivity activity,
+                                       ConnectedActivity activity,
                                        WifiP2pManager.PeerListListener peerListListener) {
         super();
         this.wifiP2pManager = wifiP2pManager;
