@@ -1,5 +1,6 @@
 package br.com.renatorfr.test.wifidirect.wifidirecttest;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pConfig;
@@ -13,11 +14,29 @@ public class WifiP2PHelper {
     private WifiP2pManager wifiP2pManager;
     private WifiP2pManager.Channel channel;
     private IntentFilter intentFilter;
+    private BroadcastReceiver receiver;
+    private WifiP2pManager.PeerListListener peerListListener;
 
-    public WifiP2PHelper(Context context) {
+    public WifiP2PHelper(Context context, WifiP2pManager.PeerListListener peerListListener) {
+        this.peerListListener = peerListListener;
+
         wifiP2pManager = (WifiP2pManager) context.getSystemService(Context.WIFI_P2P_SERVICE);
         channel = wifiP2pManager.initialize(context, context.getMainLooper(), null);
 
+        initIntents();
+        initBroadcastReceiver(context);
+    }
+
+    public WifiP2PHelper(Context context) {
+        this(context, null);
+    }
+
+    private void initBroadcastReceiver(Context context) {
+        this.receiver = new WifiDirectBroadcastReceiver(this);
+        context.registerReceiver(receiver, intentFilter);
+    }
+
+    private void initIntents() {
         intentFilter = new IntentFilter();
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
@@ -39,6 +58,10 @@ public class WifiP2PHelper {
         });
     }
 
+    public void requestPeers() {
+        wifiP2pManager.requestPeers(channel, peerListListener);
+    }
+
     public void connectTo(WifiP2pDevice device) {
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = device.deviceAddress;
@@ -54,17 +77,5 @@ public class WifiP2PHelper {
                 Log.i(LOG_TAG, LogCommands.PEER_NOT_CONNECTED.getCommand());
             }
         });
-    }
-
-    public WifiP2pManager getWifiP2pManager() {
-        return wifiP2pManager;
-    }
-
-    public WifiP2pManager.Channel getChannel() {
-        return channel;
-    }
-
-    public IntentFilter getIntent() {
-        return intentFilter;
     }
 }

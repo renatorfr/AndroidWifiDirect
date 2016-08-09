@@ -40,19 +40,18 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
         setListeners();
 
         this.helper = new WifiP2PHelper(getApplicationContext());
-//        this.receiver = new WifiDirectBroadcastReceiver(helper.getWifiP2pManager(), helper.getChannel(), this, helper);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(receiver, helper.getIntent());
+//        registerReceiver(receiver, helper.getIntent());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(receiver);
+//        unregisterReceiver(receiver);
     }
 
     private void setListeners() {

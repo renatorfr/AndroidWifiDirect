@@ -11,15 +11,14 @@ import android.util.Log;
 public class MainActivity extends AppCompatActivity implements WifiP2pManager.PeerListListener {
     private static final String LOG_TAG = "WIFIP2P_MAIN_ACTIVITY";
     private RecyclerView lstDevice;
-    private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter adapter;
     private WifiP2PHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        this.helper = new WifiP2PHelper(getApplicationContext());
+        setContentView(R.layout.activity_main);
 
         this.lstDevice = (RecyclerView) findViewById(R.id.lstDevice);
         this.lstDevice.setHasFixedSize(true);
@@ -27,7 +26,8 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Pe
         layoutManager = new LinearLayoutManager(this);
         lstDevice.setLayoutManager(layoutManager);
 
-        lstDevice.setAdapter(adapter);
+        this.helper = new WifiP2PHelper(getApplicationContext(), this);
+        this.helper.discoverPeers();
     }
 
     @Override
