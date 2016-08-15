@@ -1,6 +1,8 @@
 package br.com.renatorfr.test.wifidirect.wifidirecttest;
 
 import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
@@ -13,29 +15,29 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
     private Button btnDown;
     private Button btnLeft;
     private Button btnRight;
-    private Button btnConnect;
     private TextView txtCommands;
-    private TextView txtLog;
+    private TextView txtDevice;
     private BroadcastReceiver receiver;
     private WifiP2PHelper helper;
+    private WifiP2pDevice device;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.connected);
 
         this.btnUp = (Button) findViewById(R.id.btnUp);
         this.btnDown = (Button) findViewById(R.id.btnDown);
         this.btnLeft = (Button) findViewById(R.id.btnLeft);
         this.btnRight = (Button) findViewById(R.id.btnRight);
-        this.btnConnect = (Button) findViewById(R.id.btnConnect);
 
         this.txtCommands = (TextView) findViewById(R.id.txtCommands);
         this.txtCommands.setMovementMethod(new ScrollingMovementMethod());
 
-        this.txtLog = (TextView) findViewById(R.id.txtLog);
-        this.txtLog.setMovementMethod(new ScrollingMovementMethod());
+        this.txtDevice = (TextView) findViewById(R.id.txtDevice);
+        Intent intent = getIntent();
+        this.device = intent.getParcelableExtra(MainActivity.EXTRA_MESSAGE);
+        this.txtDevice.setText(this.device.deviceName);
 
         setListeners();
 
@@ -82,17 +84,6 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
                 writeCommand(Commands.RIGHT);
             }
         });
-
-        this.btnConnect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                connect();
-            }
-        });
-    }
-
-    private void connect() {
-        helper.discoverPeers();
     }
 
     private void writeCommand(Commands command) {
@@ -106,33 +97,9 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
 //        new SocketServerAsyncTask(getApplicationContext(), this).execute();
     }
 
-    public void writeLog(LogCommands logCommand) {
-        this.writeLog(logCommand, null);
-    }
-
-    public void writeLog(LogCommands logCommand, String arg) {
-        StringBuilder message = new StringBuilder(logCommand.getCommand());
-        if (arg != null) {
-            message.append(arg);
-        }
-        message.append(System.getProperty("line.separator"));
-        message.append(this.txtLog.getText());
-        this.txtLog.setText(message);
-    }
-
     @Override
     public void handle(Commands command) {
         writeCommand(command);
-    }
-
-    @Override
-    public void log(LogCommands logCommand) {
-        writeLog(logCommand);
-    }
-
-    @Override
-    public void log(LogCommands logCommand, String arg) {
-        writeLog(logCommand, arg);
     }
 }
 
@@ -167,22 +134,5 @@ enum Commands {
         }
 
         return null;
-    }
-}
-
-enum LogCommands {
-    WIFIP2P_ENABLED("Wifi P2P enabled \\o/"), WIFIP2P_DISABLED("Wifi P2P disabled :("),
-    DISCOVER_PEERS_SUCCESS("Peers discover success"), DISCOVER_PEERS_FAILURE("Peers discover failure"),
-    PEERS_FOUND("Peers found \\o/"), PEER("\tPeer: "), PEER_CONNECTED("Peer connected \\o/"),
-    PEER_NOT_CONNECTED("Peer not connected :(");
-
-    private String logCommand;
-
-    LogCommands(String logCommand) {
-        this.logCommand = logCommand;
-    }
-
-    public String getCommand() {
-        return logCommand;
     }
 }

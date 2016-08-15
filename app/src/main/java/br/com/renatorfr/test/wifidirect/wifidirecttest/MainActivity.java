@@ -1,5 +1,6 @@
 package br.com.renatorfr.test.wifidirect.wifidirecttest;
 
+import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
@@ -8,11 +9,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-public class MainActivity extends AppCompatActivity implements WifiP2pManager.PeerListListener {
+public class MainActivity extends AppCompatActivity implements WifiP2pManager.PeerListListener, Executor {
     private static final String LOG_TAG = "WIFIP2P_MAIN_ACTIVITY";
+    public static final String EXTRA_MESSAGE = "br.com.renatorfr.test.wifidirect.MESSAGE";
     private RecyclerView lstDevice;
     private RecyclerView.LayoutManager layoutManager;
-    private RecyclerView.Adapter adapter;
+    private DeviceAdapter adapter;
     private WifiP2PHelper helper;
 
     @Override
@@ -43,6 +45,16 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Pe
     @Override
     public void onPeersAvailable(WifiP2pDeviceList peers) {
         Log.i(LOG_TAG, LogCommands.PEERS_FOUND.getCommand());
-        lstDevice.swapAdapter(new DeviceAdapter(peers, lstDevice, helper), false);
+        adapter = new DeviceAdapter(peers, lstDevice, helper, this);
+        lstDevice.swapAdapter(adapter, false);
+    }
+
+    @Override
+    public void execute() {
+        if (adapter != null && adapter.getDeviceConnected() != null) {
+            Intent intent = new Intent(this, ConnectedActivity.class);
+            intent.putExtra(EXTRA_MESSAGE, adapter.getDeviceConnected());
+            startActivity(intent);
+        }
     }
 }

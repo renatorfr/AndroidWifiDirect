@@ -62,14 +62,14 @@ public class WifiP2PHelper {
         wifiP2pManager.requestPeers(channel, peerListListener);
     }
 
-    public void connectTo(WifiP2pDevice device) {
+    public void connectTo(WifiP2pDevice device, final Executor executor) {
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = device.deviceAddress;
         wifiP2pManager.connect(channel, config, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
                 Log.i(LOG_TAG, LogCommands.PEER_CONNECTED.getCommand());
-//                startSocketServer();
+                executor.execute();
             }
 
             @Override
