@@ -43,6 +43,6 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Pe
     @Override
     public void onPeersAvailable(WifiP2pDeviceList peers) {
         Log.i(LOG_TAG, LogCommands.PEERS_FOUND.getCommand());
-        lstDevice.setAdapter(new DeviceAdapter(peers));
+        lstDevice.swapAdapter(new DeviceAdapter(peers, lstDevice, helper), false);
     }
 }
