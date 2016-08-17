@@ -90,7 +90,7 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
     }
 
     private void sendCommand(Commands command){
-        new SocketClientAsyncTask(device.deviceAddress).doInBackground(command.getCode());
+        new SocketClientAsyncTask(device.deviceAddress).execute(command.getCode());
     }
 
     private void startSocketServer() {
