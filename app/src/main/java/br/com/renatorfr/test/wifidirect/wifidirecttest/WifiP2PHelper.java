@@ -27,10 +27,6 @@ public class WifiP2PHelper {
         initBroadcastReceiver(context);
     }
 
-    public WifiP2PHelper(Context context) {
-        this(context, null);
-    }
-
     private void initBroadcastReceiver(Context context) {
         this.receiver = new WifiDirectBroadcastReceiver(this);
         context.registerReceiver(receiver, intentFilter);

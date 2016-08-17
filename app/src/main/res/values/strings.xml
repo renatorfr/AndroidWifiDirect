@@ -7,4 +7,5 @@
     <string name="text.left">Left</string>
     <string name="text.right">Right</string>
     <string name="text.refresh">Refresh</string>
+    <string name="device.name">Device name</string>
 </resources>

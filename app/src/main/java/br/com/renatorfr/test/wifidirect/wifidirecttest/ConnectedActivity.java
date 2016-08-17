@@ -1,6 +1,5 @@
 package br.com.renatorfr.test.wifidirect.wifidirecttest;
 
-import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Bundle;
@@ -11,14 +10,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class ConnectedActivity extends AppCompatActivity implements CommandHandler {
+    private static final String LOG_TAG = "WIFIP2P_CONNECTED_ACT";
+
     private Button btnUp;
     private Button btnDown;
     private Button btnLeft;
     private Button btnRight;
     private TextView txtCommands;
     private TextView txtDevice;
-    private BroadcastReceiver receiver;
-    private WifiP2PHelper helper;
     private WifiP2pDevice device;
 
     @Override
@@ -41,19 +40,7 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
 
         setListeners();
 
-        this.helper = new WifiP2PHelper(getApplicationContext());
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        registerReceiver(receiver, helper.getIntent());
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-//        unregisterReceiver(receiver);
+        startSocketServer();
     }
 
     private void setListeners() {
@@ -61,6 +48,7 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
             @Override
             public void onClick(View v) {
                 writeCommand(Commands.UP);
+                sendCommand(Commands.UP);
             }
         });
 
@@ -68,6 +56,7 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
             @Override
             public void onClick(View v) {
                 writeCommand(Commands.DOWN);
+                sendCommand(Commands.DOWN);
             }
         });
 
@@ -75,6 +64,7 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
             @Override
             public void onClick(View v) {
                 writeCommand(Commands.LEFT);
+                sendCommand(Commands.LEFT);
             }
         });
 
@@ -82,24 +72,34 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
             @Override
             public void onClick(View v) {
                 writeCommand(Commands.RIGHT);
+                sendCommand(Commands.RIGHT);
             }
         });
     }
 
     private void writeCommand(Commands command) {
+        writeCommand(command, null);
+    }
+
+    private void writeCommand(Commands command, String sufix) {
         StringBuilder message = new StringBuilder(command.getCommand());
+        message.append(sufix != null ? sufix : "");
         message.append(System.getProperty("line.separator"));
         message.append(this.txtCommands.getText());
         this.txtCommands.setText(message);
     }
 
+    private void sendCommand(Commands command){
+        new SocketClientAsyncTask(device.deviceAddress).doInBackground(command.getCode());
+    }
+
     private void startSocketServer() {
-//        new SocketServerAsyncTask(getApplicationContext(), this).execute();
+        new SocketServerAsyncTask(getApplicationContext(), this).execute();
     }
 
     @Override
     public void handle(Commands command) {
-        writeCommand(command);
+        writeCommand(command, " - REMOTE");
     }
 }
 
