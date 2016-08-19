@@ -32,8 +32,8 @@ public class SocketServerAsyncTask extends AsyncTask<Void, Integer, Integer> {
              * call blocks until a connection is accepted from a client
              */
             ServerSocket serverSocket = new ServerSocket(SOCKET_PORT);
-            Socket client = serverSocket.accept();
             Log.i(LOG_TAG, "Socket server started");
+            Socket client = serverSocket.accept();
 
             /**
              * If this code is reached, a client has connected and transferred data

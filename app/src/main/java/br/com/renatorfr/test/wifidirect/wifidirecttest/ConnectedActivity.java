@@ -81,9 +81,9 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
         writeCommand(command, null);
     }
 
-    private void writeCommand(Commands command, String sufix) {
+    private void writeCommand(Commands command, String suffix) {
         StringBuilder message = new StringBuilder(command.getCommand());
-        message.append(sufix != null ? sufix : "");
+        message.append(suffix != null ? suffix : "");
         message.append(System.getProperty("line.separator"));
         message.append(this.txtCommands.getText());
         this.txtCommands.setText(message);
