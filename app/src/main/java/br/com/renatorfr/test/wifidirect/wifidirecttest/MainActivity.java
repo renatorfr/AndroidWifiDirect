@@ -2,6 +2,7 @@ package br.com.renatorfr.test.wifidirect.wifidirecttest;
 
 import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pDeviceList;
+import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-public class MainActivity extends AppCompatActivity implements WifiP2pManager.PeerListListener, Executor {
+public class MainActivity extends AppCompatActivity implements WifiP2pManager.PeerListListener, Executor, WifiP2pManager.ConnectionInfoListener {
     private static final String LOG_TAG = "WIFIP2P_MAIN_ACTIVITY";
     public static final String EXTRA_MESSAGE = "br.com.renatorfr.test.wifidirect.MESSAGE";
     private RecyclerView lstDevice;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Pe
         layoutManager = new LinearLayoutManager(this);
         lstDevice.setLayoutManager(layoutManager);
 
-        this.helper = new WifiP2PHelper(getApplicationContext(), this);
+        this.helper = new WifiP2PHelper(getApplicationContext(), this, this);
         this.helper.discoverPeers();
     }
 
@@ -52,9 +53,19 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Pe
     @Override
     public void execute() {
         if (adapter != null && adapter.getDeviceConnected() != null) {
-            Intent intent = new Intent(this, ConnectedActivity.class);
-            intent.putExtra(EXTRA_MESSAGE, adapter.getDeviceConnected());
-            startActivity(intent);
+            changeActivity(ConnectedActivity.class, adapter.getDeviceConnected().deviceAddress);
         }
+    }
+
+    @Override
+    public void onConnectionInfoAvailable(WifiP2pInfo info) {
+
+        changeActivity(ConnectedActivity.class, info.groupOwnerAddress.getHostAddress());
+    }
+
+    private void changeActivity(Class clazz, String address) {
+        Intent intent = new Intent(this, clazz);
+        intent.putExtra(EXTRA_MESSAGE, address);
+        startActivity(intent);
     }
 }

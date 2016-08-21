@@ -22,6 +22,7 @@ public class SocketClientAsyncTask extends AsyncTask<Integer, Void, Void> {
 
     @Override
     protected Void doInBackground(Integer... params) {
+        Log.e(LOG_TAG, "Send command called");
         try {
             /**
              * Create a client socket with the host,
@@ -40,6 +41,8 @@ public class SocketClientAsyncTask extends AsyncTask<Integer, Void, Void> {
         } catch (FileNotFoundException e) {
             Log.e(LOG_TAG, e.getMessage());
         } catch (IOException e) {
+            Log.e(LOG_TAG, e.getMessage());
+        } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage());
         }
 

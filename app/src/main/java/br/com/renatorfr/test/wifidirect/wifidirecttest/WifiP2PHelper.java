@@ -16,9 +16,11 @@ public class WifiP2PHelper {
     private IntentFilter intentFilter;
     private BroadcastReceiver receiver;
     private WifiP2pManager.PeerListListener peerListListener;
+    private WifiP2pManager.ConnectionInfoListener connectionInfoListener;
 
-    public WifiP2PHelper(Context context, WifiP2pManager.PeerListListener peerListListener) {
+    public WifiP2PHelper(Context context, WifiP2pManager.PeerListListener peerListListener, WifiP2pManager.ConnectionInfoListener connectionInfoListener) {
         this.peerListListener = peerListListener;
+        this.connectionInfoListener = connectionInfoListener;
 
         wifiP2pManager = (WifiP2pManager) context.getSystemService(Context.WIFI_P2P_SERVICE);
         channel = wifiP2pManager.initialize(context, context.getMainLooper(), null);
@@ -73,5 +75,9 @@ public class WifiP2PHelper {
                 Log.i(LOG_TAG, LogCommands.PEER_NOT_CONNECTED.getCommand());
             }
         });
+    }
+
+    public void receivedConnection() {
+        wifiP2pManager.requestConnectionInfo(channel, connectionInfoListener);
     }
 }

@@ -1,8 +1,8 @@
 package br.com.renatorfr.test.wifidirect.wifidirecttest;
 
 import android.content.Intent;
-import android.net.wifi.p2p.WifiP2pDevice;
 import android.os.Bundle;
+import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -18,7 +18,7 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
     private Button btnRight;
     private TextView txtCommands;
     private TextView txtDevice;
-    private WifiP2pDevice device;
+    private String deviceAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +35,8 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
 
         this.txtDevice = (TextView) findViewById(R.id.txtDevice);
         Intent intent = getIntent();
-        this.device = intent.getParcelableExtra(MainActivity.EXTRA_MESSAGE);
-        this.txtDevice.setText(this.device.deviceName);
+        this.deviceAddress = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        this.txtDevice.setText(this.deviceAddress);
 
         setListeners();
 
@@ -89,8 +89,8 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
         this.txtCommands.setText(message);
     }
 
-    private void sendCommand(Commands command){
-        new SocketClientAsyncTask(device.deviceAddress).execute(command.getCode());
+    private void sendCommand(Commands command) {
+        AsyncTaskCompat.executeParallel(new SocketClientAsyncTask(deviceAddress), command.getCode());
     }
 
     private void startSocketServer() {
