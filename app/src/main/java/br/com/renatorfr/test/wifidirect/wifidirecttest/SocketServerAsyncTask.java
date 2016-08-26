@@ -50,7 +50,7 @@ public class SocketServerAsyncTask extends AsyncTask<Void, Integer, Integer> {
     @Override
     protected void onPostExecute(Integer result) {
         if (result != null) {
-            commandHandler.handle(Commands.getByCode(result));
+            commandHandler.handle(result);
         }
     }
 }

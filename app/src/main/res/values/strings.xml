@@ -8,4 +8,6 @@
     <string name="text.right">Right</string>
     <string name="text.refresh">Refresh</string>
     <string name="device.name">Device name</string>
+    <string name="ping">Ping</string>
+    <string name="deviceName">TextView</string>
 </resources>

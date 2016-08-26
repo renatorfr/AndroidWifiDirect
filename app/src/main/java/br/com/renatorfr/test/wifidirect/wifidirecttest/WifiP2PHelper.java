@@ -8,6 +8,9 @@ import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
 
+import java.util.Collection;
+import java.util.List;
+
 public class WifiP2PHelper {
     private final String LOG_TAG = "WIFIP2P_HELPER";
 
@@ -60,14 +63,13 @@ public class WifiP2PHelper {
         wifiP2pManager.requestPeers(channel, peerListListener);
     }
 
-    public void connectTo(WifiP2pDevice device, final Executor executor) {
+    public void connectTo(final WifiP2pDevice device) {
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = device.deviceAddress;
         wifiP2pManager.connect(channel, config, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
                 Log.i(LOG_TAG, LogCommands.PEER_CONNECTED.getCommand());
-                executor.execute();
             }
 
             @Override

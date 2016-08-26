@@ -10,7 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-public class MainActivity extends AppCompatActivity implements WifiP2pManager.PeerListListener, Executor, WifiP2pManager.ConnectionInfoListener {
+public class MainActivity extends AppCompatActivity implements WifiP2pManager.PeerListListener, WifiP2pManager.ConnectionInfoListener {
     private static final String LOG_TAG = "WIFIP2P_MAIN_ACTIVITY";
     public static final String EXTRA_MESSAGE = "br.com.renatorfr.test.wifidirect.MESSAGE";
     private RecyclerView lstDevice;
@@ -46,21 +46,17 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Pe
     @Override
     public void onPeersAvailable(WifiP2pDeviceList peers) {
         Log.i(LOG_TAG, LogCommands.PEERS_FOUND.getCommand());
-        adapter = new DeviceAdapter(peers, lstDevice, helper, this);
+        adapter = new DeviceAdapter(peers, lstDevice, helper);
         lstDevice.setAdapter(adapter);
     }
 
     @Override
-    public void execute() {
-        if (adapter != null && adapter.getDeviceConnected() != null) {
-            changeActivity(ConnectedActivity.class, adapter.getDeviceConnected().deviceAddress);
-        }
-    }
-
-    @Override
     public void onConnectionInfoAvailable(WifiP2pInfo info) {
-
-        changeActivity(ConnectedActivity.class, info.groupOwnerAddress.getHostAddress());
+        if (info.isGroupOwner) {
+            changeActivity(ConnectedActivity.class, info.groupOwnerAddress.getHostAddress());
+        } else {
+            changeActivity(SendPingActivity.class, info.groupOwnerAddress.getHostAddress());
+        }
     }
 
     private void changeActivity(Class clazz, String address) {

@@ -1,6 +1,5 @@
 package br.com.renatorfr.test.wifidirect.wifidirecttest;
 
-import android.bluetooth.BluetoothClass;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.support.v7.widget.RecyclerView;
@@ -17,8 +16,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     private List<WifiP2pDevice> deviceList;
     private RecyclerView recyclerView;
     private WifiP2PHelper helper;
-    private Executor executor;
-    private WifiP2pDevice deviceConnected = null;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView deviceName;
@@ -29,11 +26,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         }
     }
 
-    public DeviceAdapter(WifiP2pDeviceList deviceList, RecyclerView recyclerView, WifiP2PHelper helper, Executor executor) {
+    public DeviceAdapter(WifiP2pDeviceList deviceList, RecyclerView recyclerView, WifiP2PHelper helper) {
         this.deviceList = new ArrayList<>(deviceList.getDeviceList());
         this.recyclerView = recyclerView;
         this.helper = helper;
-        this.executor = executor;
     }
 
     @Override
@@ -47,8 +43,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                 int pos = recyclerView.getChildAdapterPosition(view);
                 if (pos >= 0 && pos < getItemCount()) {
                     Log.i(LOG_TAG, deviceList.get(pos).toString());
-                    helper.connectTo(deviceList.get(pos), executor);
-                    deviceConnected = deviceList.get(pos);
+                    helper.connectTo(deviceList.get(pos));
                 }
             }
         });
@@ -64,9 +59,5 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return deviceList.size();
-    }
-
-    public WifiP2pDevice getDeviceConnected() {
-        return deviceConnected;
     }
 }
