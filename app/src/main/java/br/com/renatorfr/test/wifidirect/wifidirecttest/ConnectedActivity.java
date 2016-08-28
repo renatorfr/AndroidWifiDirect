@@ -27,7 +27,6 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
 
     private void writeCommand(String command) {
         StringBuilder message = new StringBuilder(command);
-        message.append(message != null ? message : "");
         message.append(System.getProperty("line.separator"));
         message.append(this.txtCommands.getText());
         this.txtCommands.setText(message);
@@ -42,5 +41,7 @@ public class ConnectedActivity extends AppCompatActivity implements CommandHandl
         if (result == 1) {
             writeCommand("Pong - REMOTE");
         }
+
+        startSocketServer();
     }
 }

@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Pe
 
     @Override
     public void onConnectionInfoAvailable(WifiP2pInfo info) {
+        if (info.groupOwnerAddress == null) {
+            return;
+        }
         if (info.isGroupOwner) {
             changeActivity(ConnectedActivity.class, info.groupOwnerAddress.getHostAddress());
         } else {

@@ -34,6 +34,6 @@ public class SendPingActivity extends AppCompatActivity {
     }
 
     private void sendCommand() {
-        AsyncTaskCompat.executeParallel(new SocketClientAsyncTask(deviceAddress), 1);
+        new SocketClientAsyncTask(deviceAddress).execute(1);
     }
 }
