@@ -82,4 +82,8 @@ public class WifiP2PHelper {
     public void receivedConnection() {
         wifiP2pManager.requestConnectionInfo(channel, connectionInfoListener);
     }
+
+    public void disconnect(WifiP2pManager.ActionListener listener) {
+        wifiP2pManager.removeGroup(channel, listener);
+    }
 }

@@ -1,29 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:paddingBottom="@dimen/activity_vertical_margin"
-              android:paddingLeft="@dimen/activity_horizontal_margin"
-              android:paddingRight="@dimen/activity_horizontal_margin"
-              android:paddingTop="@dimen/activity_vertical_margin"
-              tools:context="br.com.renatorfr.test.wifidirect.wifidirecttest.ConnectedActivity">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 android:orientation="vertical"
+                                                 android:paddingBottom="@dimen/activity_vertical_margin"
+                                                 android:paddingLeft="@dimen/activity_horizontal_margin"
+                                                 android:paddingRight="@dimen/activity_horizontal_margin"
+                                                 android:paddingTop="@dimen/activity_vertical_margin"
+                                                 tools:context="br.com.renatorfr.test.wifidirect.wifidirecttest.ConnectedActivity">
 
-    <TextView
-        android:id="@+id/txtDevice"
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtDevice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/deviceName"
+            tools:text="@string/device.name"/>
+
+        <TextView
+            android:id="@+id/txtCommands"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="top"
+            android:layout_weight="0.5"
+            android:scrollbars="vertical"
+            android:text="@string/text.commands"/>
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnDisconnect"
+        app:fabSize="normal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/deviceName"
-        tools:text="@string/device.name"/>
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_cellphone_link_off"/>
 
-    <TextView
-        android:id="@+id/txtCommands"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="top"
-        android:layout_weight="0.5"
-        android:scrollbars="vertical"
-        android:text="@string/text.commands"/>
-
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

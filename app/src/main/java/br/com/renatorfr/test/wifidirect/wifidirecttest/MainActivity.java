@@ -5,15 +5,18 @@ import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity implements WifiP2pManager.PeerListListener, WifiP2pManager.ConnectionInfoListener {
     private static final String LOG_TAG = "WIFIP2P_MAIN_ACTIVITY";
     public static final String EXTRA_MESSAGE = "br.com.renatorfr.test.wifidirect.MESSAGE";
     private RecyclerView lstDevice;
+    private FloatingActionButton btnRefresh;
     private RecyclerView.LayoutManager layoutManager;
     private DeviceAdapter adapter;
     private WifiP2PHelper helper;
@@ -31,6 +34,17 @@ public class MainActivity extends AppCompatActivity implements WifiP2pManager.Pe
 
         this.helper = new WifiP2PHelper(getApplicationContext(), this, this);
         this.helper.discoverPeers();
+
+        this.btnRefresh = (FloatingActionButton) findViewById(R.id.btnRefresh);
+        this.btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                helper.discoverPeers();
+            }
+        });
+
+        WifiDirectTestApplication app = ((WifiDirectTestApplication) getApplication());
+        app.setHelper(helper);
     }
 
     @Override
